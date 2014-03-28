@@ -17,4 +17,10 @@ array_unique($test);
 var_dump($array);
 
 echo $array[0]." ".$array[1]." ".$array[2]." ".$array[3];
+/*
+ * 
+ * I am editing thi file alone just for fun and thats it
+ * 
+ */
+
 ?>
