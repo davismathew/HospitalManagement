@@ -14,7 +14,7 @@ function dbselect($con,$vartab) {
  * dbselectcondition() runs a query with condition and returns resultant set
 */
 function dbselectcondition($con,$vartab,$varcond) {
-	$result = mysqli_query($con,"SELECT * FROM ".$vartab." where catid=".$varcond);
+	$result = mysqli_query($con,"SELECT * FROM ".$vartab." where catid='".$varcond."'");
 	return $result;
 	
 }

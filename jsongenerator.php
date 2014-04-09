@@ -9,14 +9,14 @@ require_once('db_select.php');
  * eg: array(array('key1'=>'value','key2'=>'value'),array('key3'=>'value','key4'=>'value'))
  *               [[{key1:value},{key2:value}][{key3:value},{key4:value}]]
  */
-function additems($catid){
+function additems($itembeacon){
 	$conxn=dbconxn();
 	$vartable="items";
-	$queryresult=dbselectcondition($conxn,$vartable,$catid);
+	$queryresult=dbselectcondition($conxn,$vartable,$itembeacon);
 	//iterate through the query results array
 	while($row = mysqli_fetch_array($queryresult))
 	{
-		$items[]=array('name'=>$row['description'],'majorminor'=>$row['item_major_minor'],'imageurl'=>$row['image_url'],'videourl'=>$row['video_url'],'isPush'=>$row['is_push']);
+		$items[]=array('name'=>$row['title'],'majorminor'=>$row['item_major_minor'],'imageurl'=>$row['image_url'],'videourl'=>$row['video_url'],'isPush'=>$row['is_push']);
 	}
 	if(!empty($items)) {return $items;}
 }
@@ -28,26 +28,28 @@ function additems($catid){
 * eg: array(array('key1'=>'value','key2'=>'value'),array('key3'=>'value','key4'=>'value'))
 *               [[{key1:value},{key2:value}][{key3:value},{key4:value}]]
 */
-function addcategories(){
+function addcategories($itembeacon){
 	$conxn=dbconxn();
-	$vartable="categories";
+	$vartable="category";
 	$varcondition="";
-	$queryresult=dbselect($conxn,$vartable);
+	$queryresult=dbselectcondition($conxn,$vartable,$itembeacon);
 	//iterate through the query results array
 	while($row = mysqli_fetch_array($queryresult))
 	{
-		$catid=$row['catid'];
-		$categories[]=array('id'=>$row['catid'],'name'=>$row['name'],'description'=>$row['description'],'imageurl'=>$row['imageurl'],'items'=>additems($catid));
+//		$catid=$row['catid'];
+		$categories=array('id'=>$itembeacon,'name'=>$row['name'],'description'=>$row['description'],'imageurl'=>$row['image_url'],'items'=>additems($itembeacon));
 //		echo "nothing <br/>";
 	}
+	
+	
 	if(!empty($categories)) return $categories;
 
 }
-
+$itembeacon='M123';
 //calling categories() and fetiching the array of arrays
-$category=addcategories();
+$category=addcategories($itembeacon);
 //final format for converting into json data
-$jsondata=array('beacons'=>(array('categories'=>($category))));
+$jsondata=array('beacons'=>$category);
 
 echo "<br/>";
 echo "<br/>";
